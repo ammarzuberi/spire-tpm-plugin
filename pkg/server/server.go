@@ -238,6 +238,7 @@ func (p *Plugin) Attest(stream nodeattestorv1.NodeAttestor_AttestServer) error {
 			AgentAttributes: &nodeattestorv1.AgentAttributes{
 				SpiffeId:       common.AgentID(p.config.trustDomain, hashEncoded),
 				SelectorValues: buildSelectors(hashEncoded),
+				CanReattest:    true,
 			},
 		},
 	})

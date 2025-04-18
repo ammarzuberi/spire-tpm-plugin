@@ -1,6 +1,8 @@
 module github.com/bloomberg/spire-tpm-plugin
 
-go 1.20
+go 1.23.0
+
+toolchain go1.23.2
 
 require (
 	github.com/google/go-attestation v0.4.4-0.20220404204839-8820d49b18d9

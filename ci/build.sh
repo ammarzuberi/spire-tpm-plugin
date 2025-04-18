@@ -6,7 +6,7 @@ export "FIXUID=$(id -u)"
 export "FIXGID=$(id -g)"
 
 function cleanup() {
-  docker-compose \
+  docker compose \
     -f docker/docker-compose.yaml \
     -p spire-tpm-plugin \
     stop
@@ -14,7 +14,7 @@ function cleanup() {
 
 trap cleanup EXIT
 
-docker-compose \
+docker compose \
   -f docker/docker-compose.yaml \
   -p spire-tpm-plugin \
   up \

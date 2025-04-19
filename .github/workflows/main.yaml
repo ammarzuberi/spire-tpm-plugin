@@ -13,7 +13,8 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
+      packages: write
     steps:
 
     - name: Checkout
@@ -52,16 +53,6 @@ jobs:
           exit 1
         fi
 
-    - name: Release
-      if: |
-        github.event_name == 'push'
-          && startsWith(github.event.ref, 'refs/tags/')
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        ./ci/release.sh "${{ steps.compute_tag.outputs.TAG }}"
-        gh release create "${GITHUB_REF#refs/tags/}" ./releases/* --title "${GITHUB_REF#refs/tags/}"
-
     - name: Set up Buildx
       if: |
         github.event_name == 'push'
@@ -90,3 +81,14 @@ jobs:
           && startsWith(github.event.ref, 'refs/tags/')
       run: |
         ./ci/docker.sh "${{ steps.compute_tag.outputs.TAG }}"
+
+    - name: Release
+      if: |
+        github.event_name == 'push'
+          && startsWith(github.event.ref, 'refs/tags/')
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        ./ci/release.sh "${{ steps.compute_tag.outputs.TAG }}"
+        gh release create "${GITHUB_REF#refs/tags/}" ./releases/* --title "${GITHUB_REF#refs/tags/}"
+
